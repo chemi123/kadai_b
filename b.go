@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-type GuessSet struct {
-	NumStr string
-	Bulls  int
-	Cows   int
+type guessSet struct {
+	nums  []int
+	bulls int
+	cows  int
 }
 
 // 方針: 数字を候補の4つまで絞りこんでから、全24パターンで位置まで見て枝狩りをする。そして最後に候補が1つになればそれを返し、そうでないならNoneという方針でできる？
@@ -19,13 +19,13 @@ type GuessSet struct {
 // ・候補を4つまで絞るには？
 // ・4つまで絞ったあとの枝狩りはどうする？
 // ・他のやり方もあるのか？
-func guess(guessSets []GuessSet) (string, bool) {
-	for _, guessSet := range guessSets {
-		if guessSet.Bulls == 4 {
-			return guessSet.NumStr, true
+func guess(sets []guessSet) ([]int, bool) {
+	for _, set := range sets {
+		if set.bulls == 4 {
+			return set.nums, true
 		}
 	}
-	return "None", false
+	return []int{}, false
 }
 
 func main() {
@@ -37,15 +37,20 @@ func main() {
 	for i := 0; i < dataSetNum; i++ {
 		scanner.Scan()
 		questionsNum, _ := strconv.Atoi(scanner.Text())
-		guessSets := make([]GuessSet, 0, questionsNum)
+		sets := make([]guessSet, 0, questionsNum)
 
 		for j := 0; j < questionsNum; j++ {
 			scanner.Scan()
 			numBullsCows := strings.Split(scanner.Text(), " ")
+			nums := make([]int, 0, 4)
+			for _, numStr := range numBullsCows {
+				num, _ := strconv.Atoi(numStr)
+				nums = append(nums, num)
+			}
 			bulls, _ := strconv.Atoi(numBullsCows[1])
 			cows, _ := strconv.Atoi(numBullsCows[2])
-			guessSets = append(guessSets, GuessSet{NumStr: numBullsCows[0], Bulls: bulls, Cows: cows})
+			sets = append(sets, guessSet{nums: nums, bulls: bulls, cows: cows})
 		}
-		fmt.Println(guessSets)
+		fmt.Println(sets)
 	}
 }
