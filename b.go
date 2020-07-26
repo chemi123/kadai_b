@@ -14,6 +14,11 @@ type GuessSet struct {
 	Cows   int
 }
 
+// 方針: 数字を候補の4つまで絞りこんでから、全24パターンで位置まで見て枝狩りをする。そして最後に候補が1つになればそれを返し、そうでないならNoneという方針でできる？
+// わかってないこと
+// ・候補を4つまで絞るには？
+// ・4つまで絞ったあとの枝狩りはどうする？
+// ・他のやり方もあるのか？
 func guess(guessSets []GuessSet) (string, bool) {
 	for _, guessSet := range guessSets {
 		if guessSet.Bulls == 4 {
