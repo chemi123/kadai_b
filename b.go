@@ -8,6 +8,21 @@ import (
 	"strings"
 )
 
+type GuessSet struct {
+	NumStr string
+	Bulls  int
+	Cows   int
+}
+
+func guess(guessSets []GuessSet) (string, bool) {
+	for _, guessSet := range guessSets {
+		if guessSet.Bulls == 4 {
+			return guessSet.NumStr, true
+		}
+	}
+	return "None", false
+}
+
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Scan()
@@ -17,14 +32,15 @@ func main() {
 	for i := 0; i < dataSetNum; i++ {
 		scanner.Scan()
 		questionsNum, _ := strconv.Atoi(scanner.Text())
-		fmt.Println(questionsNum)
+		guessSets := make([]GuessSet, 0, questionsNum)
+
 		for j := 0; j < questionsNum; j++ {
 			scanner.Scan()
-			guessBullsCows := strings.Split(scanner.Text(), " ")
-			guess := guessBullsCows[0]
-			bulls, _ := strconv.Atoi(guessBullsCows[1])
-			cows, _ := strconv.Atoi(guessBullsCows[2])
-			fmt.Println(guess, bulls, cows)
+			numBullsCows := strings.Split(scanner.Text(), " ")
+			bulls, _ := strconv.Atoi(numBullsCows[1])
+			cows, _ := strconv.Atoi(numBullsCows[2])
+			guessSets = append(guessSets, GuessSet{NumStr: numBullsCows[0], Bulls: bulls, Cows: cows})
 		}
+		fmt.Println(guessSets)
 	}
 }
